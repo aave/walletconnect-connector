@@ -22,7 +22,7 @@ jobs:
         id: prepare
         shell: bash
         run: |
-          echo "//registry.yarnpkg.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> ~/.npmrc
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> ~/.npmrc
           git config user.name "GitHub Actions Build"
           git config user.email "developers@aave.com"
       - name: install
@@ -51,4 +51,4 @@ jobs:
         run: |
           yarn run release -- --message "chore(release): Release v%s :tada: [ci skip]"
           git push --follow-tags origin main
-          yarn publish --access public
+          npm publish --access public
