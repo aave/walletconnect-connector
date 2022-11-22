@@ -1,0 +1,54 @@
+name: release-ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # cache yarn deps
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16.9.1"
+          cache: "yarn"
+
+      - name: prepare
+        id: prepare
+        shell: bash
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> ~/.npmrc
+          git config user.name "GitHub Actions Build"
+          git config user.email "developers@aave.com"
+      - name: install
+        id: install
+        run: |
+          yarn
+      - id: build
+        name: build
+        run: |
+          yarn run build
+      - id: prerelease
+        name: prerelease
+        if: |
+          github.event.pull_request.head.repo.full_name == github.repository &&
+          !contains(github.head_ref, 'dependabot') &&
+          !contains(github.event.head_commit.message, 'chore(release)') &&
+          github.ref != 'refs/heads/main'
+        run: |
+          yarn run release -- --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
+          yarn publish --tag canary --access public --registry=https://registry.npmjs.org/
+      - id: release
+        name: release
+        if: |
+          github.ref == 'refs/heads/main' &&
+          !contains(github.event.head_commit.message, 'chore(release)')
+        run: |
+          yarn run release -- --message "chore(release): Release v%s :tada: [ci skip]"
+          git push --follow-tags origin main
+          yarn publish --access public --registry=https://registry.npmjs.org/
