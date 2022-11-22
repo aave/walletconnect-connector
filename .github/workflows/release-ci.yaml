@@ -22,7 +22,7 @@ jobs:
         id: prepare
         shell: bash
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> ~/.npmrc
+          echo "//registry.yarnpkg.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> ~/.npmrc
           git config user.name "GitHub Actions Build"
           git config user.email "developers@aave.com"
       - name: install
