@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.9.1"
-          cache: "npm"
+          cache: "yarn"
 
       - name: prepare
         id: prepare
@@ -28,15 +28,15 @@ jobs:
       - name: install
         id: install
         run: |
-          npm ci
+          yarn ci
       - id: lint
         name: lint
         run: |
-          npm run lint
+          yarn run lint
       - id: build
         name: build
         run: |
-          npm run build
+          yarn run build
       - id: prerelease
         name: prerelease
         if: |
@@ -45,14 +45,14 @@ jobs:
           !contains(github.event.head_commit.message, 'chore(release)') &&
           github.ref != 'refs/heads/main'
         run: |
-          npm run release -- --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
-          npm publish --tag canary --access public
+          yarn run release -- --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
+          yarn publish --tag canary --access public
       - id: release
         name: release
         if: |
           github.ref == 'refs/heads/main' &&
           !contains(github.event.head_commit.message, 'chore(release)')
         run: |
-          npm run release -- --message "chore(release): Release v%s :tada: [ci skip]"
+          yarn run release -- --message "chore(release): Release v%s :tada: [ci skip]"
           git push --follow-tags origin main
-          npm publish --access public
+          yarn publish --access public
