@@ -42,7 +42,7 @@ jobs:
           github.ref != 'refs/heads/main'
         run: |
           yarn run release -- --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
-          yarn publish --tag canary --access public
+          npm publish --tag canary --access public
       - id: release
         name: release
         if: |
