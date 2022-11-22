@@ -28,7 +28,7 @@ jobs:
       - name: install
         id: install
         run: |
-          yarn ci
+          yarn
       - id: lint
         name: lint
         run: |
