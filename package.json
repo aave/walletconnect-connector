@@ -1,8 +1,6 @@
 {
   "name": "@aave/walletconnect-connector",
-  "publishConfig": {
-    "access": "public"
-  },
+  "private": false,
   "version": "6.2.14",
   "description": "A simple, maximally extensible, dependency minimized framework for building modern Ethereum dApps",
   "keywords": [
