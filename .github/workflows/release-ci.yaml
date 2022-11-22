@@ -42,7 +42,7 @@ jobs:
           github.ref != 'refs/heads/main'
         run: |
           yarn run release -- --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
-          npm publish --tag canary --access public
+          yarn publish --tag canary --access public --registry=https://registry.npmjs.org/
       - id: release
         name: release
         if: |
@@ -51,4 +51,4 @@ jobs:
         run: |
           yarn run release -- --message "chore(release): Release v%s :tada: [ci skip]"
           git push --follow-tags origin main
-          npm publish --access public
+          yarn publish --access public --registry=https://registry.npmjs.org/
