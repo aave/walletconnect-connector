@@ -29,10 +29,6 @@ jobs:
         id: install
         run: |
           yarn
-      - id: lint
-        name: lint
-        run: |
-          yarn run lint
       - id: build
         name: build
         run: |
